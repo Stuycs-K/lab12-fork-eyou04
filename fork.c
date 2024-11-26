@@ -15,11 +15,6 @@ void error() {
     exit(1);
 }
 
-// int random(int min, int max) {
-//     int num = rand() % (max - min + 1) + min;
-//     return num;
-// }
-
 int random_number() {
     int random_file;
     int num;
