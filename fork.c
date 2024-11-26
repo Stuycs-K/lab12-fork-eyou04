@@ -46,20 +46,6 @@ int main() {
         sleep(child_1_num);
         printf("%d finished after %d seconds\n",getpid(), child_1_num);
     } else {
-        int status;
-        pid_t child_pid = wait(&status);
-
-        if (child_pid == -1) {
-            perror("child_1 wait failed\n");
-            exit(1);
-        }
-        
-        if (!(WIFEXITED(status))) {
-            printf("%d child_2 did not exit normally\n", getpid());
-        }
-        
-        printf("Main Process %d is done. Child %d slept for %dsec\n", getpid() , child_1, child_1_num);
-
         child_2 = fork();
 
         if (child_2 < 0){
@@ -76,16 +62,23 @@ int main() {
             pid_t child_pid = wait(&status);
 
             if (child_pid == -1) {
-                perror("child_2 wait failed\n");
+                perror("child wait failed\n");
                 exit(1);
             }
-
+            
             if (!(WIFEXITED(status))) {
-                printf("%d child_2 did not exit normally\n", getpid());
+                printf("%d child did not exit normally\n", getpid());
             }
-
-            printf("Main Process %d is done. Child %d slept for %dsec\n", getpid() , child_2, child_2_num);
+            
+            int num_print;
+            if (child_1_num < child_2_num) {
+                num_print = child_1_num;
+            } else {
+                num_print = child_2_num;
+            }
+        
+            printf("Main Process %d is done. Child %d slept for %dsec\n", getpid() , child_pid, num_print);
         }
-
     }
+    
 }
